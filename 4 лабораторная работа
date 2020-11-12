@@ -1,0 +1,139 @@
+/*9. Создать классы LocalTime, LocalDate, LocalDateTime для реализации
+операций со временем.Написать программу, которая позволяет создавать
+расписание занятий, при этом необходимо иметь возможность анализировать
+время суток : утро, вечер, день, ночь и время года : зима, лето, осень, весна.*/
+
+#include <windows.h>
+#include<iostream>
+#include<iomanip>
+using namespace std;
+
+const int LEN = 80;
+
+
+class  LocalDateTime {
+private:
+	char name[LEN];
+	
+public:
+	void getData() {
+		cout << "Введите название предмета: ";
+		cin >> name;
+		
+	}
+	void putData() const {
+		cout << "\nпредмет: " << name;
+	}
+};
+class Time:
+	public  LocalDateTime {
+
+private:
+	int hour;//0–23
+	int minute;//0–59
+	int second;//0–59
+public:
+	void getData() {
+		LocalDateTime::getData();
+		cout << "Введите часы: ";
+		cin >>hour;
+		if (hour <= 0 && hour > 24)
+			cout << "Ошибка" << endl;
+        cout << "Введите минуты: ";
+		cin >> minute;
+		if (minute <= 0 && minute > 60)
+			cout << "Ошибка" << endl;
+		cout << "Введите секунды: ";
+		cin >> second;
+		if (second <= 0 && second > 60)
+			cout << "Ошибка" << endl;
+
+	}
+	
+	void putData()
+		 const {
+		LocalDateTime::putData();
+		cout << "\nХотите узнать время дня (утро, день, вечер, ночь) занятия?(если да, введите 1)" << endl;
+		int b;
+		cin >> b;
+		if (b == 1) {
+			if (hour > 5 && hour < 13)
+				cout << "утро" << endl;
+			if (hour > 12 && hour < 5)
+				cout << "день" << endl;
+			if (hour > 4 && hour < 22)
+				cout << "вечер" << endl;
+			if (hour > 23 && hour < 5)
+				cout << "ночь" << endl;
+		}
+		cout << "\n" << ((hour == 0 || hour == 12) ? 12 : hour % 12)
+			<< ":" << (minute < 10 ? "0" : "") << minute
+			<< ":" << (second < 10 ? "0" : "") << second
+			<< (hour < 12 ? "AM" : "PM");
+		
+	};
+};
+
+
+class Data :
+	public  LocalDateTime {
+private:
+	int day;
+	int month;
+	int year;
+public:
+	void getData() {
+		
+		cout << "Введите день: "; 
+		cin >> day;
+		cout << "Введите месяц: ";
+		cin >> month;
+		cout << "Введите год: ";
+		cin >> year;
+
+	}
+	void putData() const {
+		
+		cout << (day <= 30 ? "" : "error ") << "\n"<< day
+			<< ":" << (month <= 12 ? "" : "error ") << month
+			<< ":" << year;
+		cout << "\nХотите узнать время года занятия?(если да, введите 1)" << endl;
+		int b;
+		cin >> b;
+		if (b == 1) {
+			if (month == 12 || month == 1 || month == 2)
+				cout << "winter" << endl;
+			if (month == 3 || month == 4 || month == 5)
+				cout << "spring" << endl;
+			if (month == 6 || month == 7 || month == 8)
+				cout << "summer" << endl;
+			if (month == 9 || month == 10 || month == 11)
+				cout << "autumn" << endl;
+		}
+				
+	}
+};
+
+int main() {
+	int n, i;
+
+	Time m[20];
+	Data s[20];
+	setlocale(LC_ALL, "Russian");
+	do {
+		cout << "Введите количество занятий" << endl;
+		cin >> n;
+	} while (n < 1 || n > 20);
+	for (i = 0; i < n; ++i) {
+		cout << "Ввод информации о времени  " << i+1 << "  занятия" << endl;
+		m[n].getData();
+		cout << "\nВвод информации о дате  " << i+1 << "  занятия" << endl;
+		s[n].getData();
+
+		cout << "\nИнформация о " << i+1 << " занятии" << endl;
+		m[n].putData();
+		s[n].putData();
+		
+	}
+	return 0;
+}
