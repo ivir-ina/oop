@@ -1,0 +1,126 @@
+/*Реализовать абстрактный класс Shape, содержащий интерфейс
+иерархии фигур. Создать производные абстрактные классы TwoDShape и
+ThreeDShape, от которых унаследовать минимум три конкретные формы
+плоских и объемных фигур. Реализовать виртуальные функции print (для
+вывода типа и размеров объектов каждого класса), area (для подсчета
+площади фигуры), volume (для подсчета объема фигуры). Использовать 
+конструктор с параметрами, конструктор без параметров, конструктор
+копирования. В класс добавить необходимый набор полей и методов
+(минимум два поля и два метода) на свое усмотрение. Предусмотреть метод
+для записи полученных данных в файл.*/
+
+#include<iostream>
+#include<iomanip>
+#include <fstream>
+#include<string.h>
+#include<windows.h>
+#include <math.h>
+using namespace std;
+
+const double PI = acos(-1.0);
+class Shape 
+{ 
+public: 
+	virtual void print() = 0; 
+	virtual void area() = 0; 
+	virtual void volume() = 0; 
+};
+class TwoDShape : public Shape { 
+protected:
+	float r;
+public:
+	TwoDShape(float r1) 
+	{ 
+		r = r1; 
+	}
+	virtual void area() = 0;
+	void volume() {} 
+};
+
+class Circle : public TwoDShape { 
+public:
+	Circle(float r) :TwoDShape(r) {}
+	void print(){ 
+		cout << "Окружность с радиусом  " << r<< endl; 
+	}
+	void area() {
+		cout << "Площадь = " << PI * r * r << endl;
+	}
+	void volume() {
+		cout << "У окружности нет объема" << endl;
+	}
+};
+class Square : public TwoDShape { 
+public:
+	Square(float r) :TwoDShape(r) {}
+	void print() { cout << "Квадрат со стороной  "<<r << endl; }
+	void area() {
+		cout << "Площадь квадрата = " << r * r << endl;
+	}
+	void volume() {
+		cout << "У квадрата нет объема" << endl;
+	}
+};
+class ThreeDShape : public Shape { 
+protected:
+	float h;
+public:
+	ThreeDShape(float h1) { h = h1; }
+	virtual void volume() = 0; 
+	virtual void area() = 0;
+};
+
+class Cube : public ThreeDShape { 
+public:
+	Cube(float h) : ThreeDShape(h) {}
+	void print() { cout << "Куб с ребром " << endl; }
+	void area() {
+		cout << "Площадь основания куба = "<< h*h << endl;
+	}
+	void volume() {
+		cout << "Объем куба = " << h * h *	h << endl;
+	}
+};
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	int radius, sq, rebro;
+	Shape* shape[3];
+	int key;
+	do
+	{
+		cout << "Выберите фигуру:\n   1.- Окружность\n   2.-Квадрат\n   3.-Куб\n" << endl;
+		cin >> key;
+	} while (key < 1 || key>3);
+	switch (key)
+	{
+	case 1: {
+		cout << "введите радиус окружности" << endl;
+		cin >> radius;
+		Circle circle(radius);
+		shape[0] = &circle;
+		shape[0]->print();
+		shape[0]->area();
+		shape[0]->volume();
+		break; }
+	case 2: {
+		cout << "введите сторону квадрата" << endl;
+		cin >> sq;
+		Square square(sq);
+		shape[1] = &square;
+		shape[1]->print();
+		shape[1]->area();
+		shape[1]->volume();
+		break; }
+	case 3: {
+		cout << "введите ребро куба" << endl;
+		cin >> rebro;
+		Cube cube(rebro);
+		shape[2] = &cube; 
+		shape[2]->print();
+		shape[2]->area();
+		shape[2]->volume();
+		break;}
+	}
+	
+}
